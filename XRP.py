@@ -1,6 +1,6 @@
+import os
 import yfinance as yf
 import requests
-import os
 from datetime import datetime
 
 # =====================================
@@ -8,9 +8,10 @@ from datetime import datetime
 # =====================================
 
 TICKER = "XRP-EUR"
+NOMBRE_ACTIVO = "XRP"
 
-MEDIA = 90          # Media móvil
-DIAS = 5            # Días para calcular la pendiente
+MEDIA = 90
+DIAS = 5
 
 TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
