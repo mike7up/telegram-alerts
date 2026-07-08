@@ -2,7 +2,7 @@ name: Aviso WEBN
 
 on:
   schedule:
-    - cron: '22 18 * * *'
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 jobs:
