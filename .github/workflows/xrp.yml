@@ -2,7 +2,7 @@ name: Aviso XRP
 
 on:
   schedule:
-    - cron: '25 18 * * *'   # 20:22 en España (horario de verano)
+    - cron: '0 10 * * *'   # 20:22 en España (horario de verano)
   workflow_dispatch:
 
 jobs:
