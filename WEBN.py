@@ -1,5 +1,6 @@
 import yfinance as yf
 import requests
+import os
 from datetime import datetime
 
 # =====================================
@@ -12,8 +13,8 @@ NOMBRE_ETF = "Amundi MSCI World UCITS ETF Acc"
 MEDIA = 90
 DIAS = 5
 
-TOKEN = "TELEGRAM_TOKEN"
-CHAT_ID = "TELEGRAM_CHAT_ID"
+TOKEN = os.environ["TELEGRAM_TOKEN"]
+CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 # =====================================
 # TELEGRAM
