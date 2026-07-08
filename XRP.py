@@ -1,5 +1,6 @@
 import yfinance as yf
 import requests
+import os
 from datetime import datetime
 
 # =====================================
@@ -11,8 +12,8 @@ TICKER = "XRP-EUR"
 MEDIA = 90          # Media móvil
 DIAS = 5            # Días para calcular la pendiente
 
-TOKEN = "TELEGRAM_TOKEN"
-CHAT_ID = "TELEGRAM_CHAT_ID"
+TOKEN = os.environ["TELEGRAM_TOKEN"]
+CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 # =====================================
 # FUNCIÓN TELEGRAM
