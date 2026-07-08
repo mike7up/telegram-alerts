@@ -18,7 +18,7 @@ jobs:
 
       - run: pip install yfinance requests pandas
 
-      - run: python webn.py
+      - run: python WEBN.py
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
