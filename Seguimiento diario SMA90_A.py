@@ -1,5 +1,5 @@
-import os
 from datetime import datetime
+import os
 import requests
 import yfinance as yf
 
@@ -7,14 +7,17 @@ import yfinance as yf
 # CONFIGURACIÓN
 # =====================================
 
-# Diccionario con los tickers y sus nombres correspondientes
+# GitHub Actions inyectará estos secretos de forma segura como variables de entorno
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+
 TICKERS_CONFIG = {
     "XDEW.DE": "Xtrackers MSCI World Value",
     "SXR8.DE": "iShares Core S&P 500",
     "MEUD.FR": "Amundi MSCI Europe",
     "IS3N.DE": "iShares MSCI Emerging Markets IM",
     "ZPRV.DE": "SPDR MSCI USA Small Cap Value",
-    "SXR1.DE": "iShares NASDAQ 100",
+    "SXR1.DE": "iShares Core MSCI Pacific ex-Japan",
     "EGLN.L": "iShares Physical Gold",
     "XMK9.DE": "Xtrackers MSCI EM Asia",
     "SPY4.DE": "SPDR S&P 400 US Mid Cap",
@@ -24,15 +27,16 @@ TICKERS_CONFIG = {
 MEDIA = 90
 DIAS = 5
 
-TOKEN = os.environ["TELEGRAM_TOKEN"]
-CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
-
 # =====================================
 # TELEGRAM
 # =====================================
 
 
 def enviar_telegram(texto):
+    if not TOKEN or not CHAT_ID:
+        print("❌ Error: TOKEN o CHAT_ID no configurados.")
+        return
+
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     try:
         requests.post(
@@ -54,7 +58,6 @@ print("========================================")
 
 for ticker, nombre in TICKERS_CONFIG.items():
     try:
-        # Descargar datos
         df = yf.download(
             ticker,
             period="2y",
@@ -67,7 +70,6 @@ for ticker, nombre in TICKERS_CONFIG.items():
             print(f"⚠️ No se pudieron descargar datos para {ticker}")
             continue
 
-        # Calcular SMA90
         df["SMA"] = df["Close"].rolling(MEDIA).mean()
         df = df.dropna()
 
@@ -75,29 +77,24 @@ for ticker, nombre in TICKERS_CONFIG.items():
             print(f"⚠️ Datos insuficientes para {ticker}")
             continue
 
-        # Extraer valores necesarios
         precio = float(df["Close"].iloc[-1])
         sma_hoy = float(df["SMA"].iloc[-1])
         sma_5dias = float(df["SMA"].iloc[-(DIAS + 1)])
 
-        # Cálculos solicitados
         pendiente = ((sma_hoy - sma_5dias) / sma_5dias) * 100
         distancia_precio = ((precio - sma_hoy) / sma_hoy) * 100
 
-        # Clasificación por pendiente
         if pendiente > 0.30:
             estado = "🟢 Fuerte"
         elif pendiente > 0.10:
             estado = "🟡 Debilitándose"
         elif pendiente >= 0:
-            estado = "orange_circle Casi plana"  # Reemplazar por emoji naranja real si tu entorno lo soporta
+            estado = "🟠 Casi plana"
         else:
             estado = "🔴 Bajando"
 
-        # Formatear el signo de la distancia (+ o -)
         signo_distancia = "+" if distancia_precio >= 0 else ""
 
-        # Construir el bloque de texto para este activo
         bloque_mensaje += f"📌 *{nombre}* ({ticker})\n"
         bloque_mensaje += f"• Pendiente ({DIAS}d): {pendiente:.3f}%\n"
         bloque_mensaje += (
@@ -113,16 +110,11 @@ for ticker, nombre in TICKERS_CONFIG.items():
 # =====================================
 
 if bloque_mensaje:
-    mensaje_final = f"📊 *INFORME DIARIO DE MERCADO*\nFecha: {fecha}\n\n{bloque_mensaje}"
-
-    # Envío a Telegram
+    mensaje_final = (
+        f"📊 *INFORME DE MERCADO*\nFecha: {fecha}\n\n{bloque_mensaje}"
+    )
     enviar_telegram(mensaje_final)
     print("Mensaje enviado a Telegram.")
-
-    # Mostrar por pantalla (sin formato Markdown)
     print(mensaje_final.replace("*", ""))
 else:
     print("No se generaron datos para enviar.")
-
-print("========================================")
-input("Pulsa Enter para salir...")
