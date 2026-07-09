@@ -1,4 +1,4 @@
-name: Ejecutar Informe Diario ETF
+name: Aviso ETFs
 
 on:
   schedule:
@@ -29,4 +29,4 @@ jobs:
         # Aquí mapeamos de forma ultra segura tus secretos de GitHub al script
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      run: 'Seguimiento diario SMA90_A.py'
+      run: Seguimiento_diario_SMA90_A.py
