@@ -24,8 +24,8 @@ TICKERS_CONFIG = {
 MEDIA = 90
 DIAS = 5
 
-TOKEN = os.environ.get("TELEGRAM_TOKEN", "TU_TOKEN_AQUI")
-CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "TU_CHAT_ID_AQUI")
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 # =====================================
 # TELEGRAM
