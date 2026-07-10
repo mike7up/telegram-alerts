@@ -3,7 +3,7 @@ name: Seguimiento Diario SMA90
 on:
   schedule:
     # Se ejecuta todos los días a las 10:00 UTC (12:00 de España en horario de verano)
-    - cron: '0 10 * * *'
+    - cron: '20 21 * * *'
   workflow_dispatch: # Permite ejecutar el script manualmente desde la pestaña Actions
 
 jobs:
