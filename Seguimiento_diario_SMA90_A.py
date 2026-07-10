@@ -11,6 +11,9 @@ import yfinance as yf
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
+if not TOKEN or not CHAT_ID:
+    raise ValueError("❌ Error: No se han encontrado las variables de entorno TELEGRAM_TOKEN o TELEGRAM_CHAT_ID")
+
 TICKERS_CONFIG = {
     "XDEW.DE": "Xtrackers MSCI World Value",
     "SXR8.DE": "iShares Core S&P 500",
