@@ -36,18 +36,21 @@ DIAS = 5
 
 
 def enviar_telegram(texto):
-    if not TOKEN or not CHAT_ID:
-        print("❌ Error: TOKEN o CHAT_ID no configurados.")
-        return
-
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    payload = {
+        "chat_id": CHAT_ID, 
+        "text": texto,
+        "parse_mode": "Markdown" # Asegura que procese los asteriscos básicos
+    }
     try:
-        requests.post(
-            url, data={"chat_id": CHAT_ID, "text": texto}, timeout=20
-        )
+        response = requests.post(url, data=payload, timeout=20)
+        # Esto hará que si Telegram devuelve un error (ej. código 400), salte al except y veas el porqué
+        response.raise_for_status() 
     except Exception as e:
         print(f"Error al enviar a Telegram: {e}")
-
+        # Si la API de Telegram responde con error, imprimimos la respuesta del servidor
+        if 'response' in locals() and response:
+            print(f"Detalle del error de Telegram: {response.text}")
 
 # =====================================
 # PROCESAMIENTO DE TICKERS
