@@ -6,8 +6,8 @@ import requests
 # ==========================================
 # CONFIGURACIÓN DE TELEGRAM Y STRATEGY
 # ==========================================
-TELEGRAM_TOKEN = "TU_TOKEN_DE_TELEGRAM_AQUI"
-TELEGRAM_CHAT_ID = "TU_CHAT_ID_AQUI"
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 TICKERS = [
     "IUSQ.DE", "VWCE.DE", "EUNL.DE", "SXR8.DE", "XDEW.DE", 
