@@ -1,0 +1,33 @@
+name: ETFs Interactivo
+
+on:
+  schedule:
+    # Se ejecuta todos los días a las 10:00 UTC (12:00 de España en horario de verano)
+    - cron: '30 9 * * *'
+  workflow_dispatch: # Permite ejecutar el script manualmente desde la pestaña Actions
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar código del repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests yfinance pandas
+
+    - name: Ejecutar script de seguimiento
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        echo "" | python Seguimiento_diario_SMA90_SMA250_interactivo.py
