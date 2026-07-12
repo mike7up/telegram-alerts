@@ -9,8 +9,8 @@ from datetime import datetime
 # ==========================================
 # CONFIGURACIÓN DE TELEGRAM Y STRATEGY
 # ==========================================
-TELEGRAM_TOKEN = "TU_TOKEN_DE_TELEGRAM_AQUI"
-TELEGRAM_CHAT_ID = "TU_CHAT_ID_AQUI"
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID = os.environ.get("CHAT_ID")
 FICHERO_SISTEMA = "estado_cartera_etfs.json"
 
 TICKERS = [
@@ -61,8 +61,8 @@ def calcular_extra_sma250(dist_pct):
         return 8.0 + (base_exponencial ** 1.8)
 
 def enviar_mensaje_telegram(texto):
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": texto, "parse_mode": "Markdown"}
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": texto, "parse_mode": "Markdown"}
     try: requests.post(url, json=payload)
     except: print("⚠️ No se pudo enviar el reporte a Telegram.")
 
